@@ -1,0 +1,29 @@
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    password TEXT NOT NULL,
+    loginCount INTEGER NOT NULL,
+    lastLogin DATE,
+    isAdmin INTEGER NOT NULL
+);
+
+CREATE TABLE forums (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category TEXT NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL, moderatorId INTEGER REFERENCES users(id) NOT NULL,
+    created DATE NOT NULL, topicCount INTEGER NOT NULL, postCount INTEGER NOT NULL, lastPostId INTEGER REFERENCES posts(id)
+);
+
+CREATE TABLE topics (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    forumId INTEGER REFERENCES forums(id) NOT NULL,
+    subject TEXT NOT NULL, userId INTEGER REFERENCES users(id) NOT NULL, started DATE NOT NULL, postCount INTEGER NOT NULL,
+    firstPostId INTEGER REFERENCES posts(id), lastPostId INTEGER REFERENCES posts(id)
+);
+
+CREATE TABLE posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    topicId INTEGER REFERENCES topics(id) NOT NULL,
+    userId INTEGER REFERENCES users(id) NOT NULL, posted DATE NOT NULL, message TEXT NOT NULL
+);
+

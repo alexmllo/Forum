@@ -1,0 +1,52 @@
+
+<h1>Forum Alex</h1>
+
+<h4>Llistat de forums</h4>
+
+<p><a href="@{HomeR}">Torna a la pàgina principal</a></p>
+
+<table class="table table-striped table-condensed">
+  <thead style="color: #000000"><tr><th>Categoria</th><th>Títol</th><th>Moderador</th><th>Creat</th><th>Topics</th><th>Posts</th></tr></thead>
+  <tbody>
+      <tr>
+        <td style="color: #000000">#{ fdCategory forum }</td>
+        <td style="color: #000000">#{ fdTitle forum }</td>
+        <td style="color: #000000">^{ uidNameWidget (fdModeratorId forum) }</td>
+        <td style="color: #000000">^{ dateWidget (fdCreated forum) }</td>
+        <td style="color: #000000">#{ fdTopicCount forum }</td>
+        <td style="color: #000000">#{ fdPostCount forum } </td>
+      </tr>
+  </tbody>
+</table>
+
+<!-- <div class="bg-light">#{ fdDescription forum }</div> -->
+
+<p>Topics:</p>
+<table class="table table-striped table-condensed">
+  <thead><tr><th>Qüestió</th><th>Per / Iniciada</th><th>Posts</th><th>Última activitat</th></tr></thead>
+  <tbody>
+    $forall{ (tid, topic) <- topics }
+      <tr>
+        <td><a href="@{TopicR tid}"><strong>#{ tdSubject topic }</strong></a></td>
+        <td>^{ uidNameWidget (tdUserId topic) } / <span class="small">^{ dateWidget (tdStarted topic) }</span></td>
+        <td>#{ tdPostCount topic }</td>
+        <td>$maybe{ lastpid <- tdLastPostId topic } ^{pidPostedWidget lastpid} $end </td>
+      </tr>
+    $end
+  </tbody>
+</table>
+
+$if{ isJust mbuser }
+  <h4>Formulari per a introduir una nova pregunta (topic + post)</h4>
+  <div class="row">
+    <div class="col-sm-6"></div>
+    <div class="col-sm-12">
+      <form role="form" method="POST" action="@{ForumR fid}">
+        ^{tformw}
+      <button type="submit" class="btn btn-primary btn-sm">Topic nou</button>
+      </form>
+    </div>
+  </div>
+$end
+
+

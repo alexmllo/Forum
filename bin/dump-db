@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if test $# != 1; then
+  echo "Us: $0 NOM" >&2
+  echo "  Aboca el contingut de base de dades SQLite del fitxer 'NOM.db'" >&2
+  echo "    en el fitxer 'NOM-dump-YYYYMMDD.sql', on 'YYYYMMDD' és la data actual." >&2
+  echo "    Aquest fitxer contindrà el SQL per poder reconstruir la base de dades." >&2
+  exit 1
+fi
+
+DBNAME=$1
+
+if test ! -e $DBNAME.db; then
+  echo "ERROR: Database file '$DBNAME.db' don't exist" >&2
+  exit 1
+fi
+
+OUTNAME=$DBNAME-dump-$(date +%Y%m%d)
+echo .dump | sqlite3 $DBNAME.db > $OUTNAME.sql
+
